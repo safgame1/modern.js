@@ -66,18 +66,43 @@ export default (): CliPlugin<AppTools> => ({
           metaName,
         };
 
-        const { genNodeEntry } = await import('./entrys');
+        let code = ``;
+        const deployTarget = process.env.MODERNJS_DEPLOY || 'node';
 
-        const code = genNodeEntry({
-          plugins,
-          config,
-          appContext: serverAppContext,
-        });
+        console.log('deployTarget111111111', deployTarget);
+
+        switch (deployTarget) {
+          case 'node': {
+            const { genNodeEntry } = await import('./entrys/node');
+            code = genNodeEntry({
+              plugins,
+              config,
+              appContext: serverAppContext,
+            });
+            break;
+          }
+
+          case 'netlify': {
+            const { genNetlifyEntry } = await import('./entrys/netlify');
+            code = genNetlifyEntry({
+              plugins,
+              config,
+              appContext: serverAppContext,
+            });
+            break;
+          }
+
+          default: {
+            code = `throw new Error("unknown deploy target, MODERNJS_DEPLOY should be set");`;
+          }
+        }
+
         const { useSSR, useAPI, useWebServer } = getProjectUsage(
           appDirectory,
           outputDirectory,
         );
         const entryFilePath = path.join(outputDirectory, 'index.js');
+        // TODO: 支持纯 CSR 应用
         if (useSSR || useAPI || useWebServer) {
           await fse.writeFile(entryFilePath, code);
         }
