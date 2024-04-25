@@ -1,0 +1,1 @@
+export { genNodeEntry } from './node';
