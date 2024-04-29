@@ -15,6 +15,12 @@ export const applyBaseConfig = (
         polyfill: 'off',
         disableTsChecker: true,
       },
+      dev: { hmr: false },
+      tools: {
+        devServer: {
+          liveReload: false,
+        },
+      },
       plugins: [
         appTools({
           bundler:
