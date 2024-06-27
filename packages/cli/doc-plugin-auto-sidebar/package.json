@@ -1,6 +1,6 @@
 {
   "name": "@modern-js/doc-plugin-auto-sidebar",
-  "version": "2.54.4",
+  "version": "2.54.3",
   "description": "The Documentation Framework of Modern.js.",
   "homepage": "https://modernjs.dev/",
   "bugs": "https://github.com/web-infra-dev/modern.js/issues",
@@ -16,6 +16,7 @@
   "module": "./dist/node/index.js",
   "scripts": {
     "dev": "modern-lib dev",
+    "build": "modern-lib build",
     "reset": "rimraf ./**/node_modules",
     "lint": "modern-lib lint",
     "change": "modern-lib change",
