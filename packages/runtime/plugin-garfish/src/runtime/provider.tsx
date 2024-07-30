@@ -42,10 +42,7 @@ export function createProvider(
           if (beforeRender) {
             await beforeRender(ModernRoot, { basename, ...props });
           }
-          root = await render(
-            <ModernRoot basename={basename} {...props} />,
-            dom,
-          );
+          root = render(<ModernRoot basename={basename} {...props} />, dom);
         }
       },
       destroy({ dom }: { dom: HTMLElement }) {

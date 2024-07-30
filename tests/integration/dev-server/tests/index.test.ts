@@ -34,13 +34,16 @@ describe('dev', () => {
 
   test('should provide history api fallback correctly', async () => {
     await page.goto(`http://localhost:${appPort}`);
-    expect(await page.content()).toContain('<div>home<div>');
+    await page.$('.page');
+    expect(await page.content()).toContain('<div class="page">home<div>');
 
     await page.goto(`http://localhost:${appPort}/a`);
-    expect(await page.content()).toContain('<div>A</div>');
+    await page.$('.page');
+    expect(await page.content()).toContain('<div class="page">A</div>');
 
     await page.goto(`http://localhost:${appPort}/b`);
-    expect(await page.content()).toContain('<div>B</div>');
+    await page.$('.page');
+    expect(await page.content()).toContain('<div class="page">B</div>');
   });
 
   afterAll(async () => {

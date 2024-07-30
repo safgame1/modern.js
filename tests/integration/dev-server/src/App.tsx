@@ -6,7 +6,7 @@ const App = () => (
       <Route
         path="/"
         element={
-          <div>
+          <div className="page">
             home
             <div>
               <Link to="/a">A</Link>
@@ -18,8 +18,8 @@ const App = () => (
           </div>
         }
       />
-      <Route path="/a" element={<div>A</div>} />
-      <Route path="/b" element={<div>B</div>} />
+      <Route path="/a" element={<div className="page">A</div>} />
+      <Route path="/b" element={<div className="page">B</div>} />
     </Routes>
   </BrowserRouter>
 );

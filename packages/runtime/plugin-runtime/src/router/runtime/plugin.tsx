@@ -60,6 +60,7 @@ export const routerPlugin = (
             get() {
               return routes;
             },
+            configurable: true,
           });
         },
         wrapRoot: App => {

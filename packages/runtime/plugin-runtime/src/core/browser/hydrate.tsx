@@ -11,11 +11,11 @@ export const isReact18 = () => process.env.IS_REACT18 === 'true';
 export function hydrateRoot(
   App: React.ReactElement,
   context: RuntimeContext,
-  ModernRender: (App: React.ReactElement) => Promise<HTMLElement | Root>,
+  ModernRender: (App: React.ReactElement) => HTMLElement | Root,
   ModernHydrate: (
     App: React.ReactElement,
     callback?: () => void,
-  ) => Promise<HTMLElement | Root>,
+  ) => HTMLElement | Root,
 ) {
   const hydrateContext: RuntimeContext & { __hydration?: boolean } = {
     ...context,
@@ -90,13 +90,13 @@ export function hydrateRoot(
                 {React.cloneElement(App, { _internal_context: hydrateContext })}
               </WithCallback>
             );
-            ModernHydrate(<SSRApp />).then(root => {
+            Promise.resolve(ModernHydrate(<SSRApp />)).then(root => {
               resolve(root);
             });
           });
         } else {
           loadableReady(() => {
-            ModernHydrate(App, callback).then(root => {
+            Promise.resolve(ModernHydrate(App, callback)).then(root => {
               resolve(root);
             });
           });

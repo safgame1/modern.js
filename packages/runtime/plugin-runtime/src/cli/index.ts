@@ -113,6 +113,9 @@ export const runtimePlugin = (params?: {
               '@meta/runtime/react': '@modern-js/runtime/react',
               '@meta/runtime/context': '@modern-js/runtime/context',
               '@meta/runtime': '@modern-js/runtime',
+              '@modern-js/runtime/react-dom': isReact18
+                ? require.resolve('react-dom/client')
+                : require.resolve('react-dom'),
             },
             globalVars: {
               'process.env.IS_REACT18': process.env.IS_REACT18,
@@ -122,29 +125,6 @@ export const runtimePlugin = (params?: {
             styledComponents: {
               // https://github.com/styled-components/babel-plugin-styled-components/issues/287
               topLevelImportPaths: ['@modern-js/runtime/styled'],
-            },
-            /**
-             * Add IgnorePlugin to fix react-dom/client import error when use react17
-             */
-            webpackChain: (chain, { webpack }) => {
-              if (!isReact18) {
-                chain.plugin('ignore-plugin').use(webpack.IgnorePlugin, [
-                  {
-                    resourceRegExp: /^react-dom\/client$/,
-                    contextRegExp: /./,
-                  },
-                ]);
-              }
-            },
-            rspack: (_config, { appendPlugins, rspack }) => {
-              if (!isReact18) {
-                appendPlugins([
-                  new rspack.IgnorePlugin({
-                    resourceRegExp: /^react-dom\/client$/,
-                    contextRegExp: /./,
-                  }),
-                ]);
-              }
             },
           },
         };

@@ -92,6 +92,7 @@ export const routerPlugin = (userConfig: RouterConfig = {}): Plugin => {
             get() {
               return routes;
             },
+            configurable: true,
           });
         },
         wrapRoot: App => {
