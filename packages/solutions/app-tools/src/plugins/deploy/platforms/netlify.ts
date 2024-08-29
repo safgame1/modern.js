@@ -24,6 +24,24 @@ async function cleanDistDirectory(dir: string) {
   }
 }
 
+function copyFileWithRetry(
+  src: string,
+  dest: string,
+  retries = 5,
+  delay = 1000,
+) {
+  fse.copyFile(src, dest, (err: any) => {
+    if (err) {
+      if (err.code === 'EBUSY' && retries > 0) {
+        setTimeout(
+          () => copyFileWithRetry(src, dest, retries - 1, delay),
+          delay,
+        );
+      }
+    }
+  });
+}
+
 export const createNetlifyPreset: CreatePreset = (
   appContext,
   modernConfig,
@@ -142,12 +160,12 @@ export const createNetlifyPreset: CreatePreset = (
       await fse.writeFile(handlerFilePath, handlerCode);
       if (isEsmProject) {
         // We will not modify the entry file for the time, because we have not yet converted all the packages available for esm.
-        await fse.copy(
+        await copyFileWithRetry(
           path.join(__dirname, './netlify-entry.mjs'),
           entryFilePath,
         );
       } else {
-        await fse.copy(
+        await copyFileWithRetry(
           path.join(__dirname, './netlify-entry.js'),
           entryFilePath,
         );
