@@ -24,20 +24,27 @@ async function cleanDistDirectory(dir: string) {
   }
 }
 
-function copyFileWithRetry(
+async function copyFileWithRetry(
   src: string,
   dest: string,
   retries = 5,
   delay = 1000,
 ) {
-  fse.copyFile(src, dest, (err: any) => {
+  await fse.copy(src, dest, (err: any) => {
     if (err) {
       if (err.code === 'EBUSY' && retries > 0) {
-        setTimeout(
-          () => copyFileWithRetry(src, dest, retries - 1, delay),
-          delay,
-        );
+        return new Promise<void>((resolve, reject) => {
+          setTimeout(async () => {
+            try {
+              await copyFileWithRetry(src, dest, retries - 1, delay);
+              resolve();
+            } catch (e) {
+              reject(e);
+            }
+          }, delay);
+        });
       }
+      throw err;
     }
   });
 }
