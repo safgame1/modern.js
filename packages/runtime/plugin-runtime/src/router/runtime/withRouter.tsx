@@ -7,19 +7,23 @@ import {
 } from '@modern-js/runtime-utils/router';
 import type React from 'react';
 
-export interface WithRouterProps {
+export interface WithRouterProps<T extends Record<string, string>> {
   location: ReturnType<typeof useLocation>;
-  params: Record<string, string>;
+  params: T;
   navigate: ReturnType<typeof useNavigate>;
 }
 
-export const withRouter = <Props extends WithRouterProps>(
+export const withRouter = <
+  T extends Record<string, string>,
+  Props extends WithRouterProps<T>,
+>(
   Component: React.ComponentType<Props>,
 ) => {
-  return (props: Omit<Props, keyof WithRouterProps>) => {
+  return (props: Omit<Props, keyof WithRouterProps<T>>) => {
     const location = useLocation();
-    const params = useParams();
+    const params = useParams<T>();
     const navigate = useNavigate();
+
     return (
       <Component
         {...(props as Props)}
