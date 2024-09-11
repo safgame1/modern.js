@@ -1,19 +1,8 @@
 import type { Context, ServerPlugin } from '@modern-js/server-core';
 import path from 'path';
 import { readFileSync } from 'fs';
-// import {
-//   renderToPipeableStream,
-//   renderToReadableStream,
-// } from 'react-server-dom-webpack/server';
-import { renderToReadableStream } from 'react-server-dom-webpack/server.edge';
 import React from 'react';
-import { Pool } from 'pg';
-// import ReactApp from '../src/App';
-
-console.log('react1111111111', React.version);
-console.log('renderToReadableStream', renderToReadableStream);
-
-const pool = new Pool(require('../credentials'));
+import { renderToReadableStream } from 'react-server-dom-webpack/server.edge';
 
 interface IProps {
   selectedId: string;
@@ -21,7 +10,7 @@ interface IProps {
   searchText: string;
 }
 
-const renderRsc = async (distDir: string, props: IProps) => {
+export const renderRsc = async (distDir: string, props: IProps) => {
   const ReactApp = (await import('../src/App')).default;
   const manifest = readFileSync(
     path.resolve(distDir, './react-client-manifest.json'),
@@ -41,6 +30,7 @@ const handleResponse = async (
   distDir: string,
   redirectId?: string,
 ) => {
+  console.log('handleResponse11111111111');
   const location = JSON.parse(c.req.query('location') as string);
   if (redirectId) {
     location.selectedId = redirectId;
@@ -59,7 +49,6 @@ export default (): ServerPlugin => ({
     return {
       prepare() {
         const { middlewares, distDirectory } = api.useAppContext();
-        console.log('push middleware');
         middlewares.unshift({
           name: 'rsc',
           path: '/react',

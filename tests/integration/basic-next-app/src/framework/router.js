@@ -16,13 +16,15 @@ import React from 'react';
 import {
   createFromFetch,
   createFromReadableStream,
-} from 'react-server-dom-webpack/client';
+} from 'react-server-dom-webpack/client.browser';
+import {
+  createContext,
+  startTransition,
+  useContext,
+  useState,
+  use,
+} from 'react';
 import '../style.css';
-
-const { createContext, startTransition, useContext, useState, use } =
-  React.default || React;
-
-console.log('createContext11111111', React.default, React);
 
 const RouterContext = createContext();
 const initialCache = new Map();

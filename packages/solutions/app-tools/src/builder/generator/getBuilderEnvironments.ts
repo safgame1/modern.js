@@ -77,5 +77,9 @@ export function getBuilderEnvironments(
     };
   }
 
+  // delete environments['web'];
+
+  // console.log('environments', environments);
+
   return environments;
 }

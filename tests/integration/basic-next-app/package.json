@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "tmp",
+  "name": "basic-next-app",
   "version": "2.9.0",
   "scripts": {
     "dev": "BUNDLER=webpack NODE_OPTIONS='--conditions=react-server' modern dev",
@@ -27,6 +27,7 @@
     "pg": "8.10.0",
     "server-only": "^0.0.1",
     "excerpts": "0.0.3",
+    "date-fns": "2.29.3",
     "react-server-dom-webpack": "18.3.0-canary-8039e6d0b-20231026"
   },
   "devDependencies": {
@@ -35,8 +36,8 @@
     "@modern-js/server-core": "workspace:*",
     "@types/jest": "^29",
     "@types/node": "^14",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
     "@types/pg": "8.10.0",
     "typescript": "^5"
   }
