@@ -6,7 +6,7 @@ import path from 'node:path';
 import { getModuleMap } from './renderRsc';
 import { createFromReadableStream } from 'react-server-dom-webpack/client.browser';
 import { renderToReadableStream } from 'react-server-dom-webpack/server.edge';
-import { renderToReadableStream as renderToStream } from 'react-dom/server.edge';
+import { renderToReadableStream as renderToStream } from './react-client-runtime';
 import type { ReactNode } from 'react';
 import { Html, ServerRoot } from './framework/ServerRoot';
 import App from './App';
@@ -46,7 +46,7 @@ export const handleRequest = async (request: Request): Promise<Response> => {
     isEditing: location?.isEditing,
     searchText: location?.searchText,
   });
-  await new Promise(resolve => setTimeout(resolve, 3000));
+
   const [stream1, stream2] = stream.tee();
 
   const moduleMap = getModuleMap(distDir);
@@ -54,7 +54,6 @@ export const handleRequest = async (request: Request): Promise<Response> => {
   const elements: Promise<ReactNode[]> = createFromReadableStream(stream1, {
     ssrManifest: { moduleMap },
   });
-  console.log('66666666', elements);
 
   // const shellHtml = fs.readFileSync(path.join(__dirname, '../index.html'));
 
@@ -69,20 +68,20 @@ export const handleRequest = async (request: Request): Promise<Response> => {
   //     console.error(error);
   //   },
   // });
-  console.log('777777777');
-  const readable = await renderToStream(<div>111111111</div>, {
+
+  const readable = await renderToStream(<Html elements={elements} />, {
     onError(error) {
       console.error(error);
     },
   });
-  console.log('8888888888');
+
   const response = new Response(readable, {
     status: 200,
     headers: {
       'Content-Type': 'text/html',
     },
   });
-  console.log('99999999');
+
   return response;
 };
 

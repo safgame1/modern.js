@@ -30,7 +30,6 @@ const handleResponse = async (
   distDir: string,
   redirectId?: string,
 ) => {
-  console.log('handleResponse11111111111');
   const location = JSON.parse(c.req.query('location') as string);
   if (redirectId) {
     location.selectedId = redirectId;
@@ -54,7 +53,8 @@ export default (): ServerPlugin => ({
           path: '/react',
           handler: async (c, next) => {
             // TODO: 临时代码
-            return await handleResponse(c, distDirectory);
+            await next();
+            // return await handleResponse(c, distDirectory);
           },
         });
 

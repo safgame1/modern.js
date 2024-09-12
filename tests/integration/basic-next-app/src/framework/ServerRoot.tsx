@@ -7,8 +7,6 @@ export function ServerRoot({
 }: {
   elements: Elements;
 }) {
-  // console.log('React11111111', React.use, React.a);
-  // return <div id="root">{React.use(elements)}</div>;
   <div style={{ border: '3px red dashed', margin: '1em', padding: '1em' }}>
     <title>Waku</title>
     <h1>Hello </h1>
@@ -21,6 +19,7 @@ export function Html({
 }: {
   elements: Elements;
 }) {
+  const res = use(elements);
   return (
     <html>
       <head>
@@ -30,7 +29,7 @@ export function Html({
         <link rel="stylesheet" href="/styles.css"></link>
         <title>My app</title>
       </head>
-      <body></body>
+      <body>{res}</body>
     </html>
   );
 }
